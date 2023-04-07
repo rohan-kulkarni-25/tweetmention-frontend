@@ -1,19 +1,15 @@
-import React, { useState, useEffect, useRef } from "react";
-import LazyLoad from "react-lazy-load";
-
-import "./App.css";
-import {
-  TwitterTimelineEmbed,
-  TwitterShareButton,
-  TwitterFollowButton,
-  TwitterHashtagButton,
-  TwitterMentionButton,
-  TwitterTweetEmbed,
-} from "react-twitter-embed";
+import React, { useState, useEffect } from "react";
+import { TwitterTweetEmbed } from "react-twitter-embed";
 
 function App() {
-  const [data, setData] = useState([]);
-
+  const [data, setData] = useState([
+    {
+      text: "@Chinmay0408 @HackTheLeague @techking_007 Thank you bro🫂",
+      id: "1644390890419666945",
+      edit_history_tweet_ids: ["1644390890419666945"],
+      created_at: "2023-04-07T17:25:14.000Z",
+    },
+  ]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -23,19 +19,13 @@ function App() {
           "https://tweet-api-mentions-production.up.railway.app/api/v1/tweets"
         );
         const newData = await response.json();
-        let latestData = newData.data;
-        latestData.length = 20;
-        // if (latestData[0].id !== data[0].id) {
-        // console.log('in');
-        setData(latestData);
-        // } else {
-        // return;
-        // }
+        const value = newData.data.data;
+        setData(value);
       } catch (error) {
         console.error(error);
       }
-      setInterval(fetchData, 30000);
     };
+    // setInterval(fetchData, 30000);
     fetchData();
   }, []);
 
@@ -44,18 +34,25 @@ function App() {
       <h1 className="text-white text-center pt-8 text-8xl font-bold">
         HACK THE LEAGUE 2.0
       </h1>
-      <p className="text-center text-white text-2xl pt-8 font-mono">tweet your experience</p>
-      <div className="p-12 mt-2 grid grid-cols-4 gap-4 justify-evenly ">
-        {data.map((item) => {
-          return (
-            <div
-              className={`mt-4 mb-4 overflow-clip h-128 w-full place-self-center  `}
-            >
-              <TwitterTweetEmbed key={item.created_at} tweetId={item.id} />
-            </div>
-          );
-        })}
-      </div>
+      <p className="text-center text-white text-2xl pt-8 font-mono">
+        tweet your experience
+      </p>
+
+      {data.length > 0 ? (
+        <div className="p-12 mt-2 grid grid-cols-4 gap-4 justify-evenly ">
+          {data.map((item) => {
+            return (
+              <div
+                className={`mt-4 mb-4 overflow-clip h-128 w-full place-self-center  `}
+              >
+                <TwitterTweetEmbed key={item.created_at} tweetId={item.id} />
+              </div>
+            );
+          })}
+        </div>
+      ) : (
+        <span>LOADING</span>
+      )}
     </div>
   );
 }
