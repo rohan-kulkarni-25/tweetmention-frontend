@@ -25,6 +25,14 @@ function App() {
         console.error(error);
       }
     };
+    const loadScript = async () => {
+      const scriptModule = await import("scriptjs");
+      const script = scriptModule.default;
+
+      // ... specific script() call for given useEffect
+    };
+
+    loadScript();
     // setInterval(fetchData, 30000);
     fetchData();
   }, []);
