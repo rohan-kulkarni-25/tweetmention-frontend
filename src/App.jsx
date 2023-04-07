@@ -20,6 +20,7 @@ function App() {
         );
         const newData = await response.json();
         const value = newData.data.data;
+        value.length = 20;
         setData(value);
       } catch (error) {
         console.error(error);
@@ -33,7 +34,7 @@ function App() {
     };
 
     loadScript();
-    // setInterval(fetchData, 30000);
+    setInterval(fetchData, 10000);
     fetchData();
   }, []);
 
